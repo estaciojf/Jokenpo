@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         btnPapel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "Papel", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Papel", Toast.LENGTH_LONG).show();
                 btn = "Papel";
-                img.setVisibility(View.GONE);
+                img.setImageResource(R.drawable.tesoura);
 
             }
         });
