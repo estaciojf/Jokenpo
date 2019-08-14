@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Jokenpo</string>
+    <string name="btnPedra">Pedra</string>
+    <string name="btnTesoura">Tesoura</string>
+    <string name="btnPapel">Papel</string>
+
 </resources>
