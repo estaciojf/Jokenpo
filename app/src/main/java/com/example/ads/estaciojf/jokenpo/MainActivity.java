@@ -9,8 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
+    //Elementos do layout
     Button btnPapel;
     Button btnTesoura;
     Button btnPedra;
@@ -18,10 +21,11 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgPlayer2;
     TextView textPlacar;
 
+    //Pontuacoes
     int pontuacaoPlayer1;
     int pontuacaoPlayer2;
 
-    String btn;
+    String btnClickado;
     Context ctx;
 
     @Override
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         pontuacaoPlayer1 = 0;
         pontuacaoPlayer2 = 0;
 
+        //Link dos elementos do layout com o Java
         btnPapel = findViewById(R.id.btnPapel);
         btnTesoura = findViewById(R.id.btnTesoura);
         btnPedra = findViewById(R.id.btnPedra);
@@ -40,54 +45,104 @@ public class MainActivity extends AppCompatActivity {
         imgPlayer2 = findViewById(R.id.imgPlayer2);
         textPlacar = findViewById(R.id.textPlacar);
 
+        //Ocultando elemento ImageView ao carregar o app
         imgPlayer1.setVisibility(View.GONE);
+        imgPlayer2.setVisibility(View.GONE);
 
 
+        //Acao botao Papel
         btnPapel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                Toast.makeText(getApplicationContext(), "Papel", Toast.LENGTH_LONG)
-                        .show();
-
-                Toast msg = Toast.makeText(getApplicationContext(), "Papel embrulha pedra!Você Venceu!!!", Toast.LENGTH_SHORT);
-                msg.show();
-
-                btn = "Papel";
+                btnClickado = "papel";
                 imgPlayer1.setImageResource(R.drawable.papel);
                 imgPlayer1.setVisibility(View.VISIBLE);
-                pontuacaoPlayer1 ++;
+
+                String escolhaPlayer2 = jogadaPlayer2();
+                calculaVitoria(btnClickado ,escolhaPlayer2);
 
                 textPlacar.setText(pontuacaoPlayer1 + " x " + pontuacaoPlayer2);
-
             }
         });
 
+        //Acao botao Tesoura
         btnTesoura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "Tesoura", Toast.LENGTH_LONG).show();
-                btn = "Tesoura";
+                btnClickado = "tesoura";
                 imgPlayer1.setImageResource(R.drawable.tesoura);
+                imgPlayer1.setVisibility(View.VISIBLE);
+
+
+                String escolhaPlayer2 = jogadaPlayer2();
+                calculaVitoria(btnClickado ,escolhaPlayer2);
+
+                textPlacar.setText(pontuacaoPlayer1 + " x " + pontuacaoPlayer2);
             }
         });
 
+        //Acao botao Pedra
         btnPedra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, "Pedra", Toast.LENGTH_LONG).show();
-                btn = "Pedra";
+                btnClickado = "pedra";
                 imgPlayer1.setImageResource(R.drawable.pedra);
+                imgPlayer1.setVisibility(View.VISIBLE);
+
+
+                String escolhaPlayer2 = jogadaPlayer2();
+                calculaVitoria(btnClickado ,escolhaPlayer2);
+
+                textPlacar.setText(pontuacaoPlayer1 + " x " + pontuacaoPlayer2);
             }
         });
 
+    }
 
+//    Jogada do Player2 (Máquina)
+//    Sorteia um número sendo: 0, 1 ou 2.
+//    Retorna o valor da lista de opcoes daquele número sortiado
+    private String jogadaPlayer2() {
+        String[] opcoes = {"pedra", "papel", "tesoura"};
+        Random random = new Random();
+        int jogada = random.nextInt(3);
 
+        // Mostro o elemento do player2
+        imgPlayer2.setVisibility(View.VISIBLE);
+        // Mostro a imagem da jogada do player2
+        if (jogada == 0) imgPlayer2.setImageResource(R.drawable.pedra);
+        if (jogada == 1) imgPlayer2.setImageResource(R.drawable.papel);
+        if (jogada == 2) imgPlayer2.setImageResource(R.drawable.tesoura);
 
+        return opcoes[jogada];
+    }
 
+    private int calculaVitoria(String jogadaPlayer1, String jogadaPlayer2) {
 
+        // Se as duas jogadas forem iguais é empate, retorna 0;
+        if(jogadaPlayer1 == jogadaPlayer2) return 0;
 
+        // Aqui eu identifico todos os cenários onde o Player1 vence e retorno 1;
+        if(jogadaPlayer1 == "papel" && jogadaPlayer2 == "pedra") {
+            pontuacaoPlayer1 ++;
+            return 1;
+        }
+
+        if(jogadaPlayer1 == "pedra" && jogadaPlayer2 == "tesoura") {
+            pontuacaoPlayer1 ++;
+            return 1;
+        }
+        if(jogadaPlayer1 == "tesoura" && jogadaPlayer2 == "papel") {
+            pontuacaoPlayer1 ++;
+            return 1;
+        }
+
+        // O contrário do cenário de empate e dos cenários onde o Player1 vence,
+        //  ou seja, quando o Player2 vence, retorno -1;
+        pontuacaoPlayer2 ++;
+        return -1;
 
     }
+
 }
